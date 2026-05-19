@@ -14,13 +14,10 @@ const EmployeePage = () => {
 
   const [infos, setInfos] = useState(initialState);
 
-  const addInfo = (newInfo) => {                           
-    setInfos([...infos, { id: infos.length + 1, ...newInfo }])
-  }
   return (
     <div>
       <EmployeeTable infos={infos} />
-      <Register addInfo={addInfo} />
+      <Register setInfos={setInfos} />
 
     </div>
   )

@@ -1,20 +1,26 @@
 import React, { useState } from 'react'
 
 const initialState = {
-    name:'', email:'', job:'', pay:null
+   id:'',name:'', email:'', job:'', pay:null
 }
 
-const Register = ({ addInfo }) => {
+const Register = ({ setInfos }) => {
     const [info, setInfo] = useState(initialState)
 
   const handleChange = (e) => {
-    setInfo({ ...info, [e.target.name]: e.target.value })
+    const {name, value} = e.target;
+    setInfo(prev => (
+        {...prev,  [name]: value} 
+    ))
+    
   }
 
-  const handleSubmit = () => {
-    preventDefault()
-    addInfo(info)
-    setInfo({ name: '', email: '', job: '', pay: '' })
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setInfos(prev => (
+        [...prev, info]
+    ))
+    
   }
 
   return (
