@@ -7,24 +7,23 @@ import SiderBar from './no2_components/layout/SiderBar'
 import HeaderBar from './no2_components/layout/HeaderBar'
 
 function App() {
-
   return (
     <>
       <BrowserRouter>
-      <HeaderBar/>
-      <div>
-        <SiderBar/>
-      </div>
-        <div>
-          <Routes>
-          <Route path="/" element={<HomePage/>}/>
-          <Route path="/todo" element={<TodoPage/>}/>
-          <Route path="/employee" element={<EmployeePage/>}/>
-        </Routes> 
+        <HeaderBar />
+        <div style={{ display: 'flex' }}>
+          <SiderBar />
+          <main style={{ flex: 1 }}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/todo" element={<TodoPage />} />
+              <Route path="/employee" element={<EmployeePage />} />
+            </Routes>
+          </main>
         </div>
       </BrowserRouter>
-      
     </>
   )
 }
+
 export default App
