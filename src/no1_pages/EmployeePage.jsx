@@ -14,7 +14,7 @@ const EmployeePage = () => {
 
   const [infos, setInfos] = useState(initialState);
 
-  const addInfo = (newInfo) => {                              // 이게 없음!
+  const addInfo = (newInfo) => {                           
     setInfos([...infos, { id: infos.length + 1, ...newInfo }])
   }
   return (
