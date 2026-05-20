@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom'
 
 const Header = styled.header`
   display: flex;
@@ -46,13 +47,31 @@ const AuthButton = styled.button`
   }
 `
 
-const HeaderBar = () => {
+const HeaderBar = ({ loginMode, setLoginMode }) => {
+  const navigate = useNavigate();
+
   return (
     <Header>
+
       <Logo>Logo</Logo>
       <ButtonGroup>
-        <AuthButton>로그인</AuthButton>
-        <AuthButton>회원가입</AuthButton>
+        {loginMode.isLogin ?
+          <div>
+            <button>환영합니다 {loginMode.username}님</button>
+            <button>로그아웃</button>
+          </div>
+          :
+          <div>
+            <AuthButton onClick={() => navigate("/login")}>
+              로그인
+            </AuthButton>
+            <AuthButton onClick={() => navigate("/register")}>
+              회원가입
+              </AuthButton>
+
+          </div>
+        }
+
       </ButtonGroup>
     </Header>
   )
