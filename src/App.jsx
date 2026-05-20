@@ -30,7 +30,8 @@ function App() {
       <BrowserRouter>
       {console.log(users)}
         {console.log(loginMode.username)}
-        <HeaderBar loginMode={loginMode} setLoginMode={setLoginMode} />
+        <HeaderBar loginMode={loginMode} 
+        setLoginMode={setLoginMode} />
         <div style={{ display: 'flex' }}>
           <SiderBar />
           <main style={{ flex: 1 }}>

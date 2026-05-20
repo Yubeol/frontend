@@ -24,6 +24,13 @@ const Logo = styled.div`
 const ButtonGroup = styled.div`
   display: flex;
   gap: 10px;
+  align-items: center;
+`
+
+const WelcomeText = styled.span`
+  color: #a5b4fc;
+  font-size: 14px;
+  font-weight: 500;
 `
 
 const AuthButton = styled.button`
@@ -47,31 +54,54 @@ const AuthButton = styled.button`
   }
 `
 
+const LogoutButton = styled.button`
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  background: transparent;
+  color: #f87171;
+  border: 1px solid #f87171;
+  transition: 0.2s;
+  &:hover {
+    background: #f87171;
+    color: white;
+  }
+`
+
 const HeaderBar = ({ loginMode, setLoginMode }) => {
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    setLoginMode(prev=> (
+      {...prev, isLogin: false, username: ""}
+    ))
+    alert("로그아웃 되었습니다.");
+    navigate("/login");
+  }
+
   return (
     <Header>
-
       <Logo>Logo</Logo>
       <ButtonGroup>
         {loginMode.isLogin ?
-          <div>
-            <button>{loginMode.username}님</button>
-            <button>로그아웃</button>
-          </div>
+          <>
+            <WelcomeText>{loginMode.username}님</WelcomeText>
+           <LogoutButton onClick={handleLogout}>
+              로그아웃
+            </LogoutButton>
+          </>
           :
-          <div>
+          <>
             <AuthButton onClick={() => navigate("/login")}>
               로그인
             </AuthButton>
             <AuthButton onClick={() => navigate("/register")}>
               회원가입
-              </AuthButton>
-
-          </div>
+            </AuthButton>
+          </>
         }
-
       </ButtonGroup>
     </Header>
   )
