@@ -1,4 +1,6 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+import { Navigate, useNavigate } from 'react-router-dom';
+import styled from 'styled-components'
 
 const initialState = {
     username: "", password: ""
@@ -6,58 +8,139 @@ const initialState = {
 
 const LoginForm = ({ users, setLoginMode }) => {
     const [user, setUser] = useState(initialState);
+    const navigate = useNavigate();
     const handleChange = (e) => {
-        const {name, value} = e.target;
-        setUser(prev =>(
-            {...prev, [name]:value}
+        const { name, value } = e.target;
+        setUser(prev => (
+            { ...prev, [name]: value }
         ))
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const loginUser = users.filter(item=>(
+        const loginUser = users.filter(item => (
             item.username === user.username
             && item.password === user.password
         ))[0]
-        if(loginUser){
+        if (loginUser) {
             alert("성공")
-            setLoginMode(prev=>(
-                {...prev, isLogin: true, username: loginUser.username}
+            setLoginMode(prev => (
+                { ...prev, isLogin: true, username: loginUser.username }
             ))
-        }else{
+            navigate("/")
+        } else {
             alert("입력하신 정보가 다릅니다.")
         }
     }
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <h2>로그인</h2>
-                <div>
-                    <input
+            <Form onSubmit={handleSubmit}>
+                <Title>로그인</Title>
+                <Card>
+                    <Input
                         type="text"
                         name="username"
                         value={user.username}
                         onChange={handleChange}
                         placeholder='사용자 이름'
                     />
-                </div>
-                <div>
-                    <input
+                </Card>
+                <Card>
+                    <Input
                         type="password"
                         name="password"
                         value={user.password}
                         onChange={handleChange}
                         placeholder='비밀번호'
                     />
-                </div>
-                <div>
-                    <button>로그인</button>
-                </div>
+                </Card>
+                <Card>
+                    <LoginButton>
+                        로그인
+                    </LoginButton>
+                    <RegisterButton onClick={() => navigate("/register")}>
+                        회원가입을 하셨나요? 회원가입
+                    </RegisterButton>
+                </Card>
 
-            </form>
+            </Form>
         </>
     )
 }
 
 export default LoginForm
+
+
+const Form = styled.form`
+    width: 100%;
+    height:100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: #f1f5f9;
+`
+
+const Title = styled.h2`
+    text-align:center;
+    margin-bottom: 32px;
+    color: #1e293b;
+    font-size: 28px;
+`
+
+const Card = styled.div`
+    width: 400px;
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+
+    display: flex;
+    flex-direction: column;
+`
+const Input = styled.input`
+    width: 100%;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    border: 1px solid #dbe4ee;
+    font-size: 16px;
+    outline: none;
+    
+    transition: 0.2s;
+    &:focus{
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+`
+
+const BaseButton = styled.button`
+    width: 100%;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+`
+
+const LoginButton = styled(BaseButton)`
+    background: #3b82f6;
+    color: white;
+
+    &:hover{
+        background: #2563eb;
+    }
+`
+
+const RegisterButton = styled(BaseButton)`
+    background: transparent;
+    color: #3b82f6;
+
+    &:hover{
+        background: #eff6ff;
+    }
+`

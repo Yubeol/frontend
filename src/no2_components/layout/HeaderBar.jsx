@@ -57,7 +57,7 @@ const HeaderBar = ({ loginMode, setLoginMode }) => {
       <ButtonGroup>
         {loginMode.isLogin ?
           <div>
-            <button>환영합니다 {loginMode.username}님</button>
+            <button>{loginMode.username}님</button>
             <button>로그아웃</button>
           </div>
           :
