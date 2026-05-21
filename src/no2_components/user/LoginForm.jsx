@@ -17,6 +17,12 @@ const LoginForm = ({ users, setLoginMode }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if (!user.username || !user.password) {
+        alert("아이디와 비밀번호를 입력해주세요.");
+        return;
+    }
+
         const loginUser = users.filter(item => (
             item.username === user.username
             && item.password === user.password
@@ -51,7 +57,7 @@ const LoginForm = ({ users, setLoginMode }) => {
                     placeholder='비밀번호'
                 />
                 <LoginButton>로그인</LoginButton>
-                <RegisterButton onClick={() => navigate("/register")}>
+                <RegisterButton type="button" onClick={() => navigate("/register")}>
                     회원가입을 하셨나요? 회원가입
                 </RegisterButton>
             </Card>
