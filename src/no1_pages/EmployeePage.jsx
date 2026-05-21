@@ -22,8 +22,6 @@ const initialState = {
   selectedId: ""
 }
 
-
-
 const EmployeePage = () => {
 
   const [state, setState] = useState(initialState);
@@ -38,30 +36,68 @@ const EmployeePage = () => {
   }, [selectedId, empTable])
 
   const handleDelete = () => {
+    if(!selectedId){
+      alert("삭제할 데이터를 선택하세요");
+      return;
+    }
     setState(prev => ({
       ...prev,
-      empTable: prev.empTable.filter(item => item.id !== selectedId)
+      empTable: prev.empTable.filter(item => item.id !== selectedId),
+      emp: initialEmp,
+      selectedId: ""
     }))
   }
 
-
   return (
-    <div>
+    <div style={{ padding: '24px', maxWidth: '900px' }}>
       <EmployeeList state={state} setState={setState} />
       <EmployeeTable state={state} />
 
-      <div>
-        <button onClick={() => setState(prev => ({ ...prev, mode: "register" }))}>등록</button>
-        <button onClick={() => setState(prev => ({ ...prev, mode: "update" }))}>수정</button>
-        <button onClick={() => setState(prev => ({ ...prev, mode: "delete" }))}>삭제</button>
+      <div style={{ display: 'flex', gap: '8px', margin: '16px 0' }}>
+        <button
+          onClick={() => setState(prev => ({ ...prev, mode: "register" }))}
+          style={{
+            padding: '8px 20px', borderRadius: '8px', border: 'none',
+            background: mode === 'register' ? '#1d4ed8' : '#3b82f6',
+            color: 'white', fontWeight: '500', cursor: 'pointer', fontSize: '14px'
+          }}>
+          등록
+        </button>
+        <button
+          onClick={() => setState(prev => ({ ...prev, mode: "update" }))}
+          style={{
+            padding: '8px 20px', borderRadius: '8px', border: 'none',
+            background: mode === 'update' ? '#15803d' : '#22c55e',
+            color: 'white', fontWeight: '500', cursor: 'pointer', fontSize: '14px'
+          }}>
+          수정
+        </button>
+        <button
+          onClick={() => setState(prev => ({ ...prev, mode: "delete" }))}
+          style={{
+            padding: '8px 20px', borderRadius: '8px', border: 'none',
+            background: mode === 'delete' ? '#b91c1c' : '#ef4444',
+            color: 'white', fontWeight: '500', cursor: 'pointer', fontSize: '14px'
+          }}>
+          삭제
+        </button>
       </div>
-      {mode == "register" ? <EmployeeRegister setState={setState} />
-        : mode === "update" ?
-          <EmployeeUpdate emp={emp} setState={setState} />
-          : <button onClick={handleDelete}>위 데이터를 삭제하시겠습니까?</button>
-      }
+
+      {mode === "register" && <EmployeeRegister setState={setState} />}
+      {mode === "update" && <EmployeeUpdate emp={emp} setState={setState} />}
+      {mode === "delete" && (
+        <button onClick={handleDelete} style={{
+          padding: '10px 24px', borderRadius: '8px', border: '1px solid #fca5a5',
+          background: '#fef2f2', color: '#b91c1c',
+          fontWeight: '500', cursor: 'pointer', fontSize: '14px', marginTop: '8px'
+        }}>
+          위 데이터를 삭제하시겠습니까?
+        </button>
+      )}
     </div>
   )
 }
+
+
 
 export default EmployeePage
