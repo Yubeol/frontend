@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { EmployeeContext } from '../../no0_context/EmployeeContext'
 
 const inputStyle = {
     width: '100%', padding: '10px 12px',
@@ -10,7 +11,10 @@ const labelStyle = {
     color: '#64748b', marginBottom: '4px', fontWeight: '500'
 }
 
-const EmployeeUpdate = ({ emp, dispatch }) => {
+const EmployeeUpdate = () => {
+
+    const { state, dispatch } = useContext(EmployeeContext)
+    const { emp } = state
 
     const handleChange = (e) => {
         dispatch({ type: 'change', payload: e.target })

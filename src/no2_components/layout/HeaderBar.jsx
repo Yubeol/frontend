@@ -1,6 +1,41 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
+import { UserContext } from '../../no0_context/UserContext'
+
+const HeaderBar = () => {
+  const { state, dispatch } = useContext(UserContext);
+  const { isLogin } = state;
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch({ type: "logout" })
+    alert("로그아웃 되었습니다.");
+    navigate("/login");
+  }
+
+  return (
+    <Header>
+      <Logo>Logo</Logo>
+      <ButtonGroup>
+        {isLogin ?
+          <>
+            <WelcomeText>{state.username}님</WelcomeText>
+            <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+          </>
+          :
+          <>
+            <AuthButton onClick={() => navigate("/login")}>로그인</AuthButton>
+            <AuthButton onClick={() => navigate("/register")}>회원가입</AuthButton>
+          </>
+        }
+      </ButtonGroup>
+    </Header>
+  )
+}
+
+export default HeaderBar
+
 
 const Header = styled.header`
   display: flex;
@@ -14,46 +49,39 @@ const Header = styled.header`
   top: 0;
   z-index: 100;
 `
-
 const Logo = styled.div`
   font-size: 22px;
   font-weight: bold;
   color: #7c6af7;
 `
-
 const ButtonGroup = styled.div`
   display: flex;
   gap: 10px;
   align-items: center;
 `
-
 const WelcomeText = styled.span`
   color: #a5b4fc;
   font-size: 14px;
   font-weight: 500;
 `
-
 const AuthButton = styled.button`
   padding: 8px 16px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
-
   &:first-child {
     background: transparent;
     color: white;
     border: 1px solid #7c6af7;
     &:hover { background: #7c6af7; }
   }
-
   &:last-child {
     background: #7c6af7;
     color: white;
     &:hover { background: #6a5be0; }
   }
 `
-
 const LogoutButton = styled.button`
   padding: 8px 16px;
   border: none;
@@ -69,42 +97,3 @@ const LogoutButton = styled.button`
     color: white;
   }
 `
-
-const HeaderBar = ({ loginMode, setLoginMode }) => {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    setLoginMode(prev=> (
-      {...prev, isLogin: false, username: ""}
-    ))
-    alert("로그아웃 되었습니다.");
-    navigate("/login");
-  }
-
-  return (
-    <Header>
-      <Logo>Logo</Logo>
-      <ButtonGroup>
-        {loginMode.isLogin ?
-          <>
-            <WelcomeText>{loginMode.username}님</WelcomeText>
-           <LogoutButton onClick={handleLogout}>
-              로그아웃
-            </LogoutButton>
-          </>
-          :
-          <>
-            <AuthButton onClick={() => navigate("/login")}>
-              로그인
-            </AuthButton>
-            <AuthButton onClick={() => navigate("/register")}>
-              회원가입
-            </AuthButton>
-          </>
-        }
-      </ButtonGroup>
-    </Header>
-  )
-}
-
-export default HeaderBar

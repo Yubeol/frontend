@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { EmployeeContext } from '../../no0_context/EmployeeContext'
 
 const initialEmps = [
     { id: "1", name: "John", email: "john@example.com", job: "frontend", pay: 600 },
@@ -27,7 +28,9 @@ const initialState = {
     emp: initialEmp
 }
 
-const EmployeeRegister = ({ dispatch, emp }) => {
+const EmployeeRegister = () => {
+    const { state, dispatch } = useContext(EmployeeContext)
+    const { emp } = state
 
     const handleChange = (e) => {
         dispatch({ type: 'change', payload: e.target })
