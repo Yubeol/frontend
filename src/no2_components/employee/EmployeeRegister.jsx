@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 const initialEmps = [
     { id: "1", name: "John", email: "john@example.com", job: "frontend", pay: 600 },
@@ -27,41 +27,24 @@ const initialState = {
     emp: initialEmp
 }
 
-const reducer = (state, action) => {
-    switch (action.type) {
-        case "change":
-            const { name, value } = action.payload;
-            return{
-                ...state,
-                emp: {...state.emp, [name]: value }
-                };
-    }
-}
-
-const EmployeeRegister = ({ setState }) => {
-    const [emp, setEmp] = useState(initialEmp);
+const EmployeeRegister = ({ dispatch, emp }) => {
 
     const handleChange = (e) => {
-        const { name, value } = e.target
-        setEmp(prev => ({ ...prev, [name]: value }))
+        dispatch({ type: 'change', payload: e.target })
     }
 
     const handleSubmit = (e) => {
+
         e.preventDefault();
+
         if (!emp.name || !emp.email || !emp.job || !emp.pay) {
             alert("모든 항목을 입력해주세요.")
             return;
         }
-        setState(prev => ({
-            ...prev,
-            empTable: [...prev.empTable, { ...emp, id: String(Date.now()) }],
-            mode: ''
-        }))
-        setState(prev => ({
-            ...prev,
-            selectedId: prev.empTable[prev.empTable.length - 1].id
-        }))
-        setEmp(initialEmp)
+        const newId = String(Date.now())
+        dispatch({ type: 'register', payload: { newId, emp } })
+
+        dispatch({ type: 'reset_emp' })
     }
 
     return (

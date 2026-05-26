@@ -1,15 +1,13 @@
 import React from 'react'
 
-const EmployeeList = ({ state, setState}) => {
+const EmployeeList = ({ state, dispatch}) => {
 
     const { empTable, selectedId } = state;
 
     const handleClick = (id) => {
-        console.log("id", id)
-        setState(prev => (
-            {...prev, selectedId: id}
-        ))
+      dispatch({type: "select", payload: id})
     }
+    
     return (
   <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
     {empTable.map(item => (

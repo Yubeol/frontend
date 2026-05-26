@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import EmployeeList from '../no2_components/employee/EmployeeList'
 import EmployeeTable from '../no2_components/employee/EmployeeTable'
 import EmployeeRegister from '../no2_components/employee/EmployeeRegister'
@@ -40,24 +40,34 @@ const reducer = (state, action) => {
         empTable: [
           ...state.empTable,
           {
-            ...action.payload.newEmp,
-            id: action.payload.id
+            ...action.payload.emp,
+            id: action.payload.newId
           }
         ]
+      }
+    case "change":
+      const { name, value } = action.payload;
+      return {
+        ...state,
+        emp: { ...state.emp, [name]: value }
       }
     case "update":
       return {
         ...state,
-        empTable: state.empTable.map(
-          item.id === action.payload.id ?
-            action.payload.newEmp : item
+        empTable: state.empTable.map(item =>
+          item.id === state.selectedId ?
+            action.payload : item
         )
       }
+    case "mode":
+      return { ...state, mode: action.payload }
+    case "reset_emp":
+      return { ...state, emp: initialEmp }
     case "delete":
       return {
         ...state,
-        eampTable: state.empTable.filter(item =>
-          item.id !== state.seletedId
+        empTable: state.empTable.filter(item =>
+          item.id !== state.selectedId
         )
       }
     default:
@@ -73,7 +83,10 @@ const EmployeePage = () => {
 
   useEffect(() => {
     selectedId &&
-      dispatch({ type: "set_emp", payload: emp })
+      dispatch({
+        type: "set_emp",
+        payload: empTable.find(item => item.id === selectedId)
+      })
   }, [selectedId, empTable])
 
   const handleDelete = () => {
@@ -81,22 +94,17 @@ const EmployeePage = () => {
       alert("삭제할 데이터를 선택하세요");
       return;
     }
-    setState(prev => ({
-      ...prev,
-      empTable: prev.empTable.filter(item => item.id !== selectedId),
-      emp: initialEmp,
-      selectedId: ""
-    }))
+    dispatch({ type: "delete" })
   }
 
   return (
     <div style={{ padding: '24px', maxWidth: '900px' }}>
-      <EmployeeList state={state} setState={setState} />
+      <EmployeeList state={state} dispatch={dispatch} />
       <EmployeeTable state={state} />
 
       <div style={{ display: 'flex', gap: '8px', margin: '16px 0' }}>
         <button
-          onClick={() => setState(prev => ({ ...prev, mode: "register" }))}
+          onClick={() => dispatch({ type: "mode", payload: "register" })}
           style={{
             padding: '8px 20px', borderRadius: '8px', border: 'none',
             background: mode === 'register' ? '#1d4ed8' : '#3b82f6',
@@ -105,7 +113,7 @@ const EmployeePage = () => {
           등록
         </button>
         <button
-          onClick={() => setState(prev => ({ ...prev, mode: "update" }))}
+          onClick={() => dispatch({ type: "mode", payload: "update" })}
           style={{
             padding: '8px 20px', borderRadius: '8px', border: 'none',
             background: mode === 'update' ? '#15803d' : '#22c55e',
@@ -114,7 +122,7 @@ const EmployeePage = () => {
           수정
         </button>
         <button
-          onClick={() => setState(prev => ({ ...prev, mode: "delete" }))}
+          onClick={() => dispatch({ type: "mode", payload: "delete" })}
           style={{
             padding: '8px 20px', borderRadius: '8px', border: 'none',
             background: mode === 'delete' ? '#b91c1c' : '#ef4444',
@@ -124,8 +132,8 @@ const EmployeePage = () => {
         </button>
       </div>
 
-      {mode === "register" && <EmployeeRegister setState={setState} />}
-      {mode === "update" && <EmployeeUpdate emp={emp} setState={setState} />}
+      {mode === "register" && <EmployeeRegister dispatch={dispatch} emp={emp} />}
+      {mode === "update" && <EmployeeUpdate emp={emp} dispatch={dispatch} />}
       {mode === "delete" && (
         <button onClick={handleDelete} style={{
           padding: '10px 24px', borderRadius: '8px', border: '1px solid #fca5a5',
