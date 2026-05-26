@@ -22,21 +22,62 @@ const initialState = {
   selectedId: ""
 }
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "select":
+      return {
+        ...state,
+        selectedId: action.payload
+      }
+    case "set_emp":
+      return {
+        ...state,
+        emp: action.payload
+      }
+    case "register":
+      return {
+        ...state,
+        empTable: [
+          ...state.empTable,
+          {
+            ...action.payload.newEmp,
+            id: action.payload.id
+          }
+        ]
+      }
+    case "update":
+      return {
+        ...state,
+        empTable: state.empTable.map(
+          item.id === action.payload.id ?
+            action.payload.newEmp : item
+        )
+      }
+    case "delete":
+      return {
+        ...state,
+        eampTable: state.empTable.filter(item =>
+          item.id !== state.seletedId
+        )
+      }
+    default:
+      return state;
+  }
+}
+
 const EmployeePage = () => {
 
-  const [state, setState] = useState(initialState);
+  const [state, dispatch] = useReducer(reducer, initialState)
+
   const { empTable, emp, selectedId, mode } = state;
 
   useEffect(() => {
     selectedId &&
-      setState(prev => ({
-        ...prev,
-        emp: empTable.find(item => item.id === selectedId)
-      }))
+      dispatch({ type: "set_emp", payload: emp })
   }, [selectedId, empTable])
 
   const handleDelete = () => {
-    if(!selectedId){
+    if (!selectedId) {
       alert("삭제할 데이터를 선택하세요");
       return;
     }

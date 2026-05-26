@@ -1,7 +1,9 @@
 import React from 'react'
 
 const EmployeeList = ({ state, setState}) => {
-    const { empTable } = state;
+
+    const { empTable, selectedId } = state;
+
     const handleClick = (id) => {
         console.log("id", id)
         setState(prev => (
