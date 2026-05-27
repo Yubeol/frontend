@@ -12,6 +12,7 @@ const initialState = {
     todoObj: { id: "", subject: "", checked: false }
 }
 
+
 const reducer = (state, action) => {
     switch (action.type) {
         case "insert":
@@ -66,7 +67,6 @@ const reducer = (state, action) => {
 
 const TodoProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
-    
     return (
         <TodoContext.Provider value={{ state, dispatch }}>
             {children}
