@@ -8,7 +8,8 @@ const initialState = {
 }
 
 const LoginForm = () => {
-    const [dispatch] = useContext(UserContext);
+    const { state, dispatch } = useContext(UserContext);
+    const { users } = state;
     const [user, setUser] = useState(initialState);
     const navigate = useNavigate();
 
@@ -21,9 +22,9 @@ const LoginForm = () => {
         e.preventDefault();
 
         if (!user.username || !user.password) {
-        alert("아이디와 비밀번호를 입력해주세요.");
-        return;
-    }
+            alert("아이디와 비밀번호를 입력해주세요.");
+            return;
+        }
 
         const loginUser = users.filter(item => (
             item.username === user.username
@@ -31,7 +32,7 @@ const LoginForm = () => {
         ))[0]
         if (loginUser) {
             alert("성공")
-            dispatch({type:"login", payload:loginUser})
+            dispatch({ type: "login", payload: loginUser.username })
             navigate("/")
         } else {
             alert("입력하신 정보가 다릅니다.")
