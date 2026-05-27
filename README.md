@@ -3,7 +3,7 @@ server 띄우기: npm run dev
 
 router:npm install react-router-dom
 CSS(스타일): npm install styled-components
-
+아이콘: npm install react-icons
 
 
 reducer (state, action)
