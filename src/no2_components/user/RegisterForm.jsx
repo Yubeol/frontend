@@ -2,13 +2,16 @@ import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { UserContext } from '../../no0_context/UserContext'
+import { useDispatch } from 'react-redux'
+import { register } from '../../no3_store/slices/userSlice'
 
 const initialState = {
     username: "", password: "", confirmPassword: ""
 }
 
 const RegisterForm = () => {
-    const {dispatch} = useContext(UserContext);
+    const dispatch = useDispatch();
+
     const [user, setUser] = useState(initialState);
     const navigate = useNavigate();
 
@@ -18,23 +21,19 @@ const RegisterForm = () => {
     }
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        if (user.password !== user.confirmPassword) {
-            alert("비밀번호가 일치하지 않습니다.")
-            return;
-        }
-        dispatch({
-            type: "register",
-            payload: {
-                id: Date.now(),
-                username: user.username,
-                password: user.password
-            }
-        })
-
-        alert("회원가입 성공")
-        navigate("/login")
+    e.preventDefault();
+    if (user.password !== user.confirmPassword) {
+        alert("비밀번호가 일치하지 않습니다.")
+        return;
     }
+    dispatch(register({
+        username: user.username,
+        password: user.password
+    }))
+
+    alert("회원가입 성공")
+    navigate("/login")
+}
 
     return (
         <Form onSubmit={handleSubmit}>

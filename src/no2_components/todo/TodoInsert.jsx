@@ -1,19 +1,20 @@
-import React, {useContext} from 'react'
-import styled from 'styled-components'  
-import { TodoContext } from '../../no0_context/TodoContext'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import styled from 'styled-components'
+import { change, insert } from '../../no3_store/slices/todoSlice'
 
 const TodoInsert = () => {
-    const {state, dispatch} = useContext(TodoContext)
-    const {todoObj} = state
+    const { todoObj } = useSelector(state => state.todo)
+    const dispatch = useDispatch();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        dispatch({type: "change", payload: {[name]: value}})
+        dispatch(change({ name, value }))
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch({ type: "insert", payload: todoObj})
+        dispatch(insert())
     }
 
     return (

@@ -1,5 +1,6 @@
-import React, { useContext } from 'react'
-import { EmployeeContext } from '../../no0_context/EmployeeContext'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { update, setEmp } from '../../no3_store/slices/employeeSlice'
 
 const inputStyle = {
     width: '100%', padding: '10px 12px',
@@ -12,12 +13,12 @@ const labelStyle = {
 }
 
 const EmployeeUpdate = () => {
-
-    const { state, dispatch } = useContext(EmployeeContext)
-    const { emp } = state
+    const { emp } = useSelector(state => state.emp)
+    const dispatch = useDispatch();
 
     const handleChange = (e) => {
-        dispatch({ type: 'change', payload: e.target })
+        const { name, value } = e.target;
+        dispatch(setEmp({ ...emp, [name]: value }))
     }
 
     const handleSubmit = (e) => {
@@ -26,7 +27,7 @@ const EmployeeUpdate = () => {
             alert("모든 항목을 입력해주세요.")
             return
         }
-        dispatch({ type: "update", payload: emp })
+        dispatch(update(emp))
     }
 
     return (

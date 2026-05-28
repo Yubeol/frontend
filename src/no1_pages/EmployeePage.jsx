@@ -1,22 +1,18 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import EmployeeList from '../no2_components/employee/EmployeeList'
 import EmployeeTable from '../no2_components/employee/EmployeeTable'
 import EmployeeRegister from '../no2_components/employee/EmployeeRegister'
 import EmployeeUpdate from '../no2_components/employee/EmployeeUpdate'
-import { EmployeeContext } from '../no0_context/EmployeeContext'
-
-
+import { useDispatch, useSelector } from 'react-redux'
+import { setEmp, remove, setMode } from '../no3_store/slices/employeeSlice'
 
 const EmployeePage = () => {
-  const { state, dispatch } = useContext(EmployeeContext)
-  const { selectedId, empTable, mode } = state
+  const { selectedId, empTable, mode } = useSelector(state => state.emp);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    selectedId &&
-      dispatch({
-        type: "set_emp",
-        payload: empTable.filter(item => item.id === selectedId)[0]
-      })
+    const newEmp = empTable.filter(item => item.id === selectedId)[0]
+    selectedId && dispatch(setEmp(newEmp))
   }, [selectedId, empTable])
 
   const handleDelete = () => {
@@ -24,7 +20,7 @@ const EmployeePage = () => {
       alert("삭제할 데이터를 선택하세요");
       return;
     }
-    dispatch({ type: "delete" })
+    dispatch(remove())
   }
 
   return (
@@ -34,7 +30,7 @@ const EmployeePage = () => {
 
       <div style={{ display: 'flex', gap: '8px', margin: '16px 0' }}>
         <button
-          onClick={() => dispatch({ type: "mode", payload: "register" })}
+          onClick={() => dispatch(setMode("register"))}
           style={{
             padding: '8px 20px', borderRadius: '8px', border: 'none',
             background: mode === 'register' ? '#1d4ed8' : '#3b82f6',
@@ -43,7 +39,7 @@ const EmployeePage = () => {
           등록
         </button>
         <button
-          onClick={() => dispatch({ type: "mode", payload: "update" })}
+          onClick={() => dispatch(setMode("update"))}
           style={{
             padding: '8px 20px', borderRadius: '8px', border: 'none',
             background: mode === 'update' ? '#15803d' : '#22c55e',
@@ -52,7 +48,7 @@ const EmployeePage = () => {
           수정
         </button>
         <button
-          onClick={() => dispatch({ type: "mode", payload: "delete" })}
+          onClick={() => dispatch(setMode("delete"))}
           style={{
             padding: '8px 20px', borderRadius: '8px', border: 'none',
             background: mode === 'delete' ? '#b91c1c' : '#ef4444',
@@ -76,7 +72,5 @@ const EmployeePage = () => {
     </div>
   )
 }
-
-
 
 export default EmployeePage

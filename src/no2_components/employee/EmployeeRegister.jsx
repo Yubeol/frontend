@@ -1,12 +1,6 @@
-import React, { useContext } from 'react'
-import { EmployeeContext } from '../../no0_context/EmployeeContext'
-
-const initialEmps = [
-    { id: "1", name: "John", email: "john@example.com", job: "frontend", pay: 600 },
-    { id: "2", name: "Peter", email: "peter@example.com", job: "backend", pay: 600 },
-    { id: "3", name: "Susan", email: "susan@example.com", job: "db", pay: 600 },
-    { id: "4", name: "Sue", email: "sue@example.com", job: "ai", pay: 600 },
-]
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { register, setEmp } from '../../no3_store/slices/employeeSlice'
 
 const initialEmp = {
     id: '', name: '', email: '', job: '', pay: ''
@@ -22,32 +16,24 @@ const labelStyle = {
     color: '#64748b', marginBottom: '4px', fontWeight: '500'
 }
 
-// 분산된 emps, emp 하나로 합침.
-const initialState = {
-    empTable: initialEmps,
-    emp: initialEmp
-}
-
 const EmployeeRegister = () => {
-    const { state, dispatch } = useContext(EmployeeContext)
-    const { emp } = state
+    const dispatch = useDispatch();
+    const { emp } = useSelector(state => state.emp)
 
     const handleChange = (e) => {
-        dispatch({ type: 'change', payload: e.target })
+        const { name, value } = e.target;
+        dispatch(setEmp({ ...emp, [name]: value }))
     }
 
     const handleSubmit = (e) => {
-
         e.preventDefault();
-
         if (!emp.name || !emp.email || !emp.job || !emp.pay) {
             alert("모든 항목을 입력해주세요.")
             return;
         }
-        const newId = String(Date.now())
-        dispatch({ type: 'register', payload: { newId, emp } })
-
-        dispatch({ type: 'reset_emp' })
+        const newId = String(Date.now().toString())
+        dispatch(register({ id: newId, emp }))
+        dispatch(setEmp(initialEmp))
     }
 
     return (

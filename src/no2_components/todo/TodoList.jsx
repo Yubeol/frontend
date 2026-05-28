@@ -1,12 +1,10 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import TodoListChild from './TodoListChild'
-import { TodoContext } from '../../no0_context/TodoContext'
+import { useSelector } from 'react-redux'
+import styled from 'styled-components'
 
 const TodoList = () => {
-    const { state } = useContext(TodoContext)
-    const { todoList } = state
-
-
+    const { todoList } = useSelector(state => state.todo)
 
     return (
         <div>
@@ -20,4 +18,4 @@ const TodoList = () => {
     )
 }
 
-    export default TodoList
+export default TodoList

@@ -1,26 +1,22 @@
-import React, { useContext } from 'react'
-import { EmployeeContext } from '../../no0_context/EmployeeContext'
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { select } from "../../no3_store/slices/employeeSlice";
 
 const EmployeeList = () => {
-
-  const { state, dispatch } = useContext(EmployeeContext);
-  const { empTable, selectedId } = state;
-
-  const handleClick = (id) => {
-    dispatch({ type: "select", payload: id })
-  }
+  const { empTable, selectedId } = useSelector(state => state.emp);
+  const dispatch = useDispatch();
 
   return (
     <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
       {empTable?.map(item => (
         <button key={item.id}
-          onClick={() => handleClick(item.id)}
+          onClick={() => dispatch(select(item.id))}
           style={{
             padding: '8px 16px',
             borderRadius: '8px',
             border: '1px solid #e2e8f0',
-            background: state.selectedId === item.id ? '#3b82f6' : 'white',
-            color: state.selectedId === item.id ? 'white' : '#334155',
+            background: selectedId === item.id ? '#3b82f6' : 'white',
+            color: selectedId === item.id ? 'white' : '#334155',
             cursor: 'pointer',
             fontWeight: '500'
           }}>

@@ -1,31 +1,32 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { TodoContext } from '../../no0_context/TodoContext'
 import {
     MdCheckBox,
     MdCheckBoxOutlineBlank,
     MdRemoveCircleOutline
 } from "react-icons/md"
+import { useDispatch } from 'react-redux'
+import { toggle, update, remove } from '../../no3_store/slices/todoSlice'
 
 const TodoListChild = ({ item }) => {
-    const {dispatch} = useContext(TodoContext)
+    const dispatch = useDispatch();
     const [editing, setEditing] = useState(false)
     const [value, setValue] = useState(item.subject)
 
     const handleToggle = () => {
-        dispatch({type:"toggle", payload: item.id})
+        dispatch(toggle(item.id))
     }
 
     const handleUpdate = () => {
-       dispatch({ type: "update", payload: { id: item.id, subject: value } })
+        dispatch(update({ id: item.id, value }))
         setEditing(false)
     }
 
     const handleDelete = () => {
-       dispatch({type:"delete", payload: item.id})
+        dispatch(remove(item.id))
     }
 
-    return (                             
+    return (
         <Item>
             <CheckBox onClick={handleToggle}>
                 {item.checked
@@ -57,9 +58,9 @@ const TodoListChild = ({ item }) => {
             </DeleteBtn>
         </Item>
     )
-}                                        
+}
 
-export default TodoListChild             
+export default TodoListChild
 
 
 const Item = styled.div`
