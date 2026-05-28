@@ -1,4 +1,18 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { userTotalGetApi } from "../apis/user.api"
+
+
+export const fetchUserTotalGet = createAsyncThunk(
+    "fetchUserTotalGet",
+    (_, thunkApi) => {
+        try {
+            const payload = await userTotalGetApi()
+            return payload
+        } catch (error) {
+            return thunkApi.rejectWithValue(error.message)
+        }
+    }
+)
 
 const initialUsers = [
     { id: 1, username: "john", password: "1111" },
@@ -25,7 +39,7 @@ const userSlice = createSlice({
             state.users = [
                 ...state.users,
                 {
-                    id:action.payload.id,
+                    id: action.payload.id,
                     username: action.payload.user.username,
                     password: action.payload.user.password
                 }
@@ -35,6 +49,12 @@ const userSlice = createSlice({
             state.isLogin = false
             state.username = ""
         }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchUserTotalGet.fulfilled, (state, action)=>{
+                state.users = action.payload
+            })
     }
 })
 

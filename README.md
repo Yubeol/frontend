@@ -6,8 +6,7 @@ CSS(스타일): npm install styled-components
 아이콘: npm install react-icons
 redux: npm install react-redux @reduxjs/toolkit
 json-server(RestfulAPI): npm install -g json-server
-
-
+api 라이브브러리: npm install axios
 
 
 reducer (state, action)
@@ -21,3 +20,11 @@ useState => useReducer => useContext => redux(slice, query)
 
 context: state, 내부함수(reducers)
 redux: state, 내부함수(reducers), 외부함수(extraReducers: api)
+
+
+Restful API 
+get 전체 방식: url => return: 테이블(json)
+get 하나 데이터: url+id => return: 오브젝트(행)
+post 방식: url, object => return: object
+put 방식: url+id, object => return: object
+delete 방식: url+id => return: id
