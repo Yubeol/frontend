@@ -26,10 +26,9 @@ const RegisterForm = () => {
         alert("비밀번호가 일치하지 않습니다.")
         return;
     }
-    dispatch(register({
-        username: user.username,
-        password: user.password
-    }))
+    dispatch(register(
+       ({id:Date.now(),user})
+    ))
 
     alert("회원가입 성공")
     navigate("/login")

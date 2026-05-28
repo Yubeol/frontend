@@ -5,6 +5,9 @@ router:npm install react-router-dom
 CSS(스타일): npm install styled-components
 아이콘: npm install react-icons
 redux: npm install react-redux @reduxjs/toolkit
+json-server(RestfulAPI): npm install -g json-server
+
+
 
 
 reducer (state, action)
